@@ -4,8 +4,7 @@ services:
     name: nesthub
     env: node
     plan: free # Can be changed to 'starter' for more power
-    buildCommand: npm install && npm run build
-    preDeployCommand: npm run db:push
+    buildCommand: npm install && npm run build && npm run db:push
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
