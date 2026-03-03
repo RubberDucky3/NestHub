@@ -68,7 +68,7 @@ export function CreateTaskDialog() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="description"
@@ -91,7 +91,7 @@ export function CreateTaskDialog() {
                   <FormItem>
                     <FormLabel>Points</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
+                      <Input type="number" {...field} value={field.value ?? ""} onChange={e => field.onChange(parseInt(e.target.value))} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

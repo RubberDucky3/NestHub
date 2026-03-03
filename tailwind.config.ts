@@ -83,11 +83,11 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["var(--font-sans)"],
-        serif: ["var(--font-serif)"],
-        mono: ["var(--font-mono)"],
-        display: ["var(--font-display)"],
-        body: ["var(--font-body)"],
+        sans: ["var(--font-body)", "sans-serif"],
+        serif: ["var(--font-display)", "serif"],
+        mono: ["monospace"],
+        display: ["var(--font-display)", "serif"],
+        body: ["var(--font-body)", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {

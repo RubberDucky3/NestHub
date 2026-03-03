@@ -1,91 +1,141 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-display: 'Nunito', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-body: 'DM Sans', sans-serif;
 
-  /* Fresh, Modern Home Palette */
-  /* Primary: Soft Indigo/Blue */
-  --primary: 230 85% 60%;
+  /* Fresh, Modern Home Palette - HomeHub Brand System */
+  /* Primary: Clay */
+  --primary: 18 56% 54%;
+  /* #C8714A */
   --primary-foreground: 0 0% 100%;
 
-  /* Secondary: Soft Mint/Teal */
-  --secondary: 170 70% 40%;
+  /* Secondary: Sage */
+  --secondary: 126 19% 55%;
+  /* #7A9E7E */
   --secondary-foreground: 0 0% 100%;
 
-  /* Accent: Coral/Pink */
-  --accent: 340 85% 65%;
-  --accent-foreground: 0 0% 100%;
+  /* Accent: Wheat */
+  --accent: 40 68% 73%;
+  /* #E8C98A */
+  --accent-foreground: 25 33% 25%;
+  /* Bark - Slightly offset for readability */
 
   /* Neutral Backgrounds */
-  --background: 210 40% 99%;
-  --foreground: 220 30% 15%;
+  --background: 40 50% 97%;
+  /* Cream #FBF8F3 */
+  --foreground: 25 33% 18%;
+  /* Bark #3D2B1F */
 
   /* Cards & Surfaces */
   --card: 0 0% 100%;
-  --card-foreground: 220 30% 15%;
-  
+  /* White */
+  --card-foreground: 25 33% 18%;
+  /* Bark */
+
   /* UI Elements */
-  --muted: 210 20% 96%;
-  --muted-foreground: 220 10% 45%;
-  --border: 220 15% 94%;
-  --input: 220 15% 94%;
-  --ring: 230 85% 60%;
+  --muted: 36 38% 93%;
+  /* Sand #F5EFE6 */
+  --muted-foreground: 29 16% 40%;
+  /* Warm Gray #8C7B6B - Darkened slightly for readability */
+  --border: 24 57% 85%;
+  /* Light Clay #F0D5C4 */
+  --input: 24 57% 85%;
+  /* Light Clay */
+  --ring: 18 56% 54%;
+  /* Clay */
   --radius: 1.25rem;
+  /* 20px */
 
   /* Semantic Colors */
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 98%;
-  
-  --success: 150 60% 45%;
-  --warning: 35 90% 55%;
+
+  --success: 126 18% 38%;
+  /* Moss #4F7152 */
+  --warning: 40 68% 73%;
+  /* Wheat */
+
+  /* Specific Brand Vars mapped directly for easy use */
+  --brand-clay: #C8714A;
+  --brand-terra: #A3462A;
+  --brand-sage: #7A9E7E;
+  --brand-wheat: #E8C98A;
+  --brand-sand: #F5EFE6;
+  --brand-cream: #FBF8F3;
+  --brand-bark: #3D2B1F;
+  --brand-warm-gray: #8C7B6B;
+  --brand-light-clay: #F0D5C4;
+  --brand-moss: #4F7152;
 }
 
 .dark {
-  --background: 224 30% 12%;
-  --foreground: 210 20% 98%;
+  /* Dark mode mappings for HomeHub - Muted earthy tones */
+  --background: 25 33% 12%;
+  /* Dark Bark */
+  --foreground: 40 50% 97%;
+  /* Cream */
 
-  --card: 224 25% 16%;
-  --card-foreground: 210 20% 98%;
+  --card: 25 33% 16%;
+  /* Soft Dark Bark */
+  --card-foreground: 40 50% 97%;
+  /* Cream */
 
-  --muted: 224 20% 20%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 25 33% 20%;
+  --muted-foreground: 29 16% 65%;
+  /* Lighter Warm Gray */
 
-  --border: 224 20% 24%;
-  --input: 224 20% 24%;
-  
-  --primary: 230 85% 65%;
-  --primary-foreground: 210 40% 98%;
+  --border: 25 33% 24%;
+  --input: 25 33% 24%;
+
+  --primary: 18 56% 60%;
+  /* Lighter Clay for contrast */
+  --primary-foreground: 24 50% 97%;
+  /* Cream */
+  --primary-border: 18 56% 45%;
+  /* Slightly darker clay for borders */
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground antialiased font-body selection:bg-primary/20;
+    @apply bg-background text-foreground antialiased font-body font-light selection:bg-primary/20;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight font-bold;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight font-semibold;
   }
 }
 
 /* Custom Utilities */
 @layer utilities {
   .glass-panel {
-    @apply bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/30 dark:border-white/10 shadow-xl;
+    @apply bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-border shadow-xl;
   }
-  
+
   .card-hover {
-    @apply transition-all duration-500 ease-out hover:shadow-2xl hover:-translate-y-2 hover:border-primary/30;
+    @apply transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1 hover:border-primary/30;
   }
 
   .soft-shadow {
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 12px rgba(61, 43, 31, 0.08);
+    /* Replaced with brand shadow */
+  }
+
+  .primary-gradient {
+    background: linear-gradient(145deg, var(--brand-clay) 0%, var(--brand-terra) 100%);
   }
 }
 
@@ -94,15 +144,40 @@
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
 }
 
 /* Note Colors */
-.note-yellow { @apply bg-yellow-100 text-yellow-900 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-100 dark:border-yellow-700/50; }
-.note-blue { @apply bg-blue-100 text-blue-900 border-blue-200 dark:bg-blue-900/30 dark:text-blue-100 dark:border-blue-700/50; }
-.note-pink { @apply bg-pink-100 text-pink-900 border-pink-200 dark:bg-pink-900/30 dark:text-pink-100 dark:border-pink-700/50; }
-.note-green { @apply bg-green-100 text-green-900 border-green-200 dark:bg-green-900/30 dark:text-green-100 dark:border-green-700/50; }
+.note-yellow {
+  background-color: #fef9c3 !important;
+  border: 1px solid #fef08a;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #854d0e;
+}
+
+.note-pink {
+  background-color: #fce7f3 !important;
+  border: 1px solid #fbcfe8;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #9d174d;
+}
+
+.note-blue {
+  background-color: #dbeafe !important;
+  border: 1px solid #bfdbfe;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #1e40af;
+}
+
+.note-green {
+  background-color: #dcfce7 !important;
+  border: 1px solid #bbf7d0;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  color: #166534;
+}

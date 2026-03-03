@@ -1,18 +1,27 @@
 import { z } from 'zod';
 export * from './schema';
-import { 
-  insertHouseholdSchema, 
-  insertTaskSchema, 
-  insertShoppingItemSchema, 
-  insertEventSchema, 
+import {
+  insertHouseholdSchema,
+  insertTaskSchema,
+  insertShoppingItemSchema,
+  insertEventSchema,
   insertStickyNoteSchema,
+  updateStickyNoteSchema,
+  insertBountySchema,
+  insertRewardStoreSchema,
+  insertTaskCommentSchema,
+  insertMealSchema,
+  meals,
   households,
   tasks,
   shoppingItems,
   events,
   stickyNotes,
   users,
-  householdMembers
+  householdMembers,
+  bounties,
+  rewardStore,
+  taskComments
 } from './schema';
 
 // Shared error schemas
@@ -64,9 +73,18 @@ export const api = {
         404: errorSchemas.notFound,
         401: errorSchemas.unauthorized
       }
+    },
+    leave: {
+      method: 'DELETE' as const,
+      path: '/api/households/current/member' as const,
+      responses: {
+        204: z.void(),
+        404: errorSchemas.notFound,
+        401: errorSchemas.unauthorized
+      }
     }
   },
-  
+
   // Tasks
   tasks: {
     list: {
@@ -206,6 +224,153 @@ export const api = {
       responses: {
         204: z.void(),
         404: errorSchemas.notFound,
+        401: errorSchemas.unauthorized
+      }
+    },
+    update: {
+      method: 'PATCH' as const,
+      path: '/api/notes/:id' as const,
+      input: updateStickyNoteSchema,
+      responses: {
+        200: z.custom<typeof stickyNotes.$inferSelect>(),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized,
+        404: errorSchemas.notFound
+      }
+    }
+  },
+
+  // Bounties
+  bounties: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/bounties' as const,
+      responses: {
+        200: z.array(z.custom<typeof bounties.$inferSelect & { claimedBy: typeof users.$inferSelect | null }>()),
+        401: errorSchemas.unauthorized
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/bounties' as const,
+      input: insertBountySchema,
+      responses: {
+        201: z.custom<typeof bounties.$inferSelect>(),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized
+      }
+    },
+    claim: {
+      method: 'POST' as const,
+      path: '/api/bounties/:id/claim' as const,
+      responses: {
+        200: z.custom<typeof bounties.$inferSelect>(),
+        404: errorSchemas.notFound,
+        401: errorSchemas.unauthorized
+      }
+    }
+  },
+
+  // Rewards Store
+  rewards: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/rewards' as const,
+      responses: {
+        200: z.array(z.custom<typeof rewardStore.$inferSelect>()),
+        401: errorSchemas.unauthorized
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/rewards' as const,
+      input: insertRewardStoreSchema,
+      responses: {
+        201: z.custom<typeof rewardStore.$inferSelect>(),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized
+      }
+    },
+    purchase: {
+      method: 'POST' as const,
+      path: '/api/rewards/purchase' as const,
+      input: z.object({ rewardId: z.number() }),
+      responses: {
+        200: z.object({ success: z.boolean(), remainingPoints: z.number(), reward: z.custom<typeof rewardStore.$inferSelect>() }),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized
+      }
+    }
+  },
+
+  // Task Comments
+  taskComments: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/tasks/:id/comments' as const,
+      responses: {
+        200: z.array(z.custom<typeof taskComments.$inferSelect & { user: typeof users.$inferSelect | null }>()),
+        401: errorSchemas.unauthorized
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/tasks/:id/comments' as const,
+      input: insertTaskCommentSchema,
+      responses: {
+        201: z.custom<typeof taskComments.$inferSelect>(),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized
+      }
+    }
+  },
+
+  // Meals
+  meals: {
+    list: {
+      method: 'GET' as const,
+      path: '/api/meals' as const,
+      responses: {
+        200: z.array(z.custom<typeof meals.$inferSelect & { createdBy: typeof users.$inferSelect | null }>()),
+        401: errorSchemas.unauthorized
+      }
+    },
+    create: {
+      method: 'POST' as const,
+      path: '/api/meals' as const,
+      input: insertMealSchema,
+      responses: {
+        201: z.custom<typeof meals.$inferSelect>(),
+        400: errorSchemas.validation,
+        401: errorSchemas.unauthorized
+      }
+    },
+    delete: {
+      method: "DELETE" as const,
+      path: "/api/meals/:id" as const,
+      responses: {
+        204: z.void(),
+        404: errorSchemas.notFound,
+        401: errorSchemas.unauthorized
+      }
+    }
+  },
+
+  // Subscription
+  subscription: {
+    get: {
+      method: "GET" as const,
+      path: "/api/subscription" as const,
+      responses: {
+        200: z.object({ isSubscribed: z.boolean(), expiresAt: z.string().nullable() }),
+        401: errorSchemas.unauthorized
+      }
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/subscription" as const,
+      responses: {
+        200: z.object({ isSubscribed: z.boolean(), expiresAt: z.string() }),
         401: errorSchemas.unauthorized
       }
     }

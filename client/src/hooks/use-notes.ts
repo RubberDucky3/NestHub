@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { api, buildUrl, type InsertStickyNote } from "@shared/routes";
+import { api, buildUrl, type InsertStickyNote, type UpdateStickyNote } from "@shared/routes";
 
 export function useStickyNotes() {
   return useQuery({
@@ -36,6 +36,24 @@ export function useDeleteStickyNote() {
       const url = buildUrl(api.notes.delete.path, { id });
       const res = await fetch(url, { method: api.notes.delete.method, credentials: "include" });
       if (!res.ok) throw new Error("Failed to delete note");
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.notes.list.path] }),
+  });
+}
+
+export function useUpdateStickyNote() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, ...updates }: { id: number } & UpdateStickyNote) => {
+      const url = buildUrl(api.notes.update.path, { id });
+      const res = await fetch(url, {
+        method: api.notes.update.method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Failed to update note");
+      return api.notes.update.responses[200].parse(await res.json());
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.notes.list.path] }),
   });

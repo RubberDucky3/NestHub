@@ -57,7 +57,7 @@ export default function Settings() {
               <div key={member.id} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={member.profileImageUrl} />
+                    <AvatarImage src={member.profileImageUrl || undefined} />
                     <AvatarFallback>{member.firstName?.[0]}</AvatarFallback>
                   </Avatar>
                   <div>
@@ -65,8 +65,8 @@ export default function Settings() {
                     <p className="text-xs text-muted-foreground">{member.email}</p>
                   </div>
                 </div>
-                <div className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-full font-bold uppercase">
-                  Member
+                <div className="text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-[6px] font-bold uppercase tracking-wider">
+                  {member.role || "Member"}
                 </div>
               </div>
             ))}

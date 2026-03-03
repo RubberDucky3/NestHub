@@ -31,7 +31,10 @@ export function useCreateEvent() {
       if (!res.ok) throw new Error("Failed to create event");
       return api.events.create.responses[201].parse(await res.json());
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.events.list.path] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.events.list.path] });
+      queryClient.invalidateQueries({ queryKey: ["/api/ai-briefing"] });
+    },
   });
 }
 
@@ -43,6 +46,9 @@ export function useDeleteEvent() {
       const res = await fetch(url, { method: api.events.delete.method, credentials: "include" });
       if (!res.ok) throw new Error("Failed to delete event");
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: [api.events.list.path] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.events.list.path] });
+      queryClient.invalidateQueries({ queryKey: ["/api/ai-briefing"] });
+    },
   });
 }
